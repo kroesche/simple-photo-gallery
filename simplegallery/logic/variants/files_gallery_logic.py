@@ -142,23 +142,29 @@ class FilesGalleryLogic(BaseGalleryLogic):
 
             # Preserve the image description if the photo hasn't changed since the last time
             if photo_name in images_data:
+                print(f"Found photo {photo_name} in data file")
                 photo_data = images_data[photo_name]
 
                 # if it already has a description, check for file change
                 if photo_data["description"]:
+                    print(f"Found existing description for {photo_name}")
 
                     # use file hash for comparison if available
                     if "imghash" in photo_data:
+                        print(f"Using hash to detect file changes for {photo_name}")
                         if (reuse_descriptions or
                             image_data["imghash"] == photo_data["imghash"]):
+                            print("no change detected, reusing description")
                             image_data["description"] = photo_data["description"]
                         else:
                             print(f"*** Change detected for {photo_name}, overwriting existing description.")
 
                     # use mtime if imghash not available
                     else:
+                        print(f"Using mtime to detect file changes for {photo_name}")
                         if (reuse_descriptions or
                             image_data["mtime"] == photo_data["mtime"]):
+                            print("no change detected, reusing description")
                             image_data["description"] = photo_data["description"]
                         else:
                             print(f"*** Change detected for {photo_name}, overwriting existing description.")
